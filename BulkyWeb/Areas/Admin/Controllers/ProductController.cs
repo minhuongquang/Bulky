@@ -3,6 +3,8 @@ using Bulky.DataAccess.Repository;
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
 using Bulky.Models.ViewModels;
+using Bulky.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +13,7 @@ using System.Collections.Generic;
 namespace BulkyWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
-
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -38,7 +40,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             //ViewData["CategoryList"] = CategoryList;
             ProductVM productVM = new()
             {
-                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                CategoryList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
@@ -100,7 +102,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
             else
             {
-                productVM.CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                productVM.CategoryList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
