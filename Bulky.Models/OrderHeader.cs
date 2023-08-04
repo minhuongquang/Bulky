@@ -28,6 +28,7 @@ namespace Bulky.Models
         public DateTime PaymentDate { get; set; }
         public DateOnly PaymentDueDate { get; set; }
 
+        public string? SessionID { get; set; }
         public string? PaymentIntendId { get; set; }
         [Required]
         public string Name { get; set; }
@@ -39,6 +40,8 @@ namespace Bulky.Models
         public string? State { get; set; }
         [Required]
         public string? PostalCode { get; set; }
+        [Required]
+        public string? PhoneNumber { get; set; }
 
     }
 }
