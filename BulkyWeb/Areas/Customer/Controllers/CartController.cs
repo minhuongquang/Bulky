@@ -151,6 +151,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                     };
                     options.LineItems.Add(sessionLineItem);
                 }
+
                 var service = new SessionService();
                 Session session =  service.Create(options);
 
@@ -163,7 +164,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             else
             {
                 //Company user
-                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
                 ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusApprovedForDelayPayment;
             }
 
