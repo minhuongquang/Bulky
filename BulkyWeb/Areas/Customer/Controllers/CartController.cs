@@ -50,8 +50,9 @@ namespace BulkyWeb.Areas.Customer.Controllers
         public IActionResult Minus(int cartID)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartID);
-            if (cartFromDb.Count == 1)
+            if (cartFromDb.Count <= 1)
             {
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else
@@ -64,7 +65,10 @@ namespace BulkyWeb.Areas.Customer.Controllers
         }
         public IActionResult Remove(int cartID)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartID);
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartID, tracked: true);
+
+            HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
+
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
             _unitOfWork.Save();
             return RedirectToAction("Index");
@@ -182,7 +186,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             else
             {
                 //Company user
-                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
                 ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusApprovedForDelayPayment;
 
                 foreach (var cart in ShoppingCartVM.ShoppingCartList)
