@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230723010729_AddShoppingCart")]
+    [Migration("20230723011859_AddShoppingCart")]
     partial class AddShoppingCart
     {
         /// <inheritdoc />
