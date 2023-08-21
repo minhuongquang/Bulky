@@ -47,7 +47,6 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
             IMailService mailService,
             IUnitOfWork unitOfWork)
         {
@@ -57,7 +56,6 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
             _unitOfWork = unitOfWork;
             _mailService = mailService;
         }
@@ -195,9 +193,6 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
-
-                    //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     MailRequest mailRequest = new MailRequest();
                     mailRequest.ToEmail = Input.Email;
