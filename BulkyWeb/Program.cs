@@ -8,6 +8,10 @@ using Bulky.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
 using Bulky.DataAccess.DBInitializer;
+using Bulky.Utility.Settings;
+using System.Configuration;
+using Bulky.Utility.Service;
+using Bulky.Utility.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,9 +21,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
 //options => options.SignIn.RequireConfirmedAccount = true
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders()
+    .AddDefaultUI();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Identity/Account/Login";
@@ -44,7 +52,8 @@ builder.Services.AddSession(options =>
 builder.Services.AddScoped<IDBInitializer, DBInitializer>();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+// builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IMailService, MailService>();
 
 var app = builder.Build();
 

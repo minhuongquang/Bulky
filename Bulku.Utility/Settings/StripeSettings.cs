@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bulky.Utility
+namespace Bulky.Utility.Settings
 {
     public class StripeSettings
     {
         public string SecretKey { get; set; }
-        public string PublishableKey { get; set; } 
+        public string PublishableKey { get; set; }
     }
 }
