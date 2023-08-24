@@ -25,27 +25,27 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> products = _unitOfWork.Product.GetAll(incluedeProperties:"Category").ToList();
+            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
             return View(products);
         }
         public IActionResult Upsert(int? id)
         {
-            //IEnumerable<SelectListItem> CategoryList1 = _unitOfWork.Category
+            //IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category
             //    .GetAll().Select(u => new SelectListItem
             //    {
             //        Text = u.Name,
             //        Value = u.Id.ToString()
             //    });
-            ///ViewBag.CategoryList = CategoryList;
+            //ViewBag.CategoryList = CategoryList;
             //ViewData["CategoryList"] = CategoryList;
             ProductVM productVM = new()
             {
-                CategoryList = _unitOfWork.Company.GetAll().Select(u => new SelectListItem
+                Product = new Product(),
+                CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
                 {
                     Text = u.Name,
                     Value = u.Id.ToString()
-                }),
-                Product = new Product()
+                })
             };
             if (id == null || id == 0)
             {
@@ -115,7 +115,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Product> products = _unitOfWork.Product.GetAll(incluedeProperties: "Category").ToList();
+            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
             return Json(new { data = products });
         }
         [HttpDelete]

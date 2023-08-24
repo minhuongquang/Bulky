@@ -17,6 +17,7 @@ using Bulky.Utility;
 using Bulky.Utility.Service.IService;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -37,7 +38,6 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
         private readonly IUserStore<IdentityUser> _userStore;
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMailService _mailService;
 
@@ -197,7 +197,17 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                     MailRequest mailRequest = new MailRequest();
                     mailRequest.ToEmail = Input.Email;
                     mailRequest.Subject = "Confirm your email";
-                    mailRequest.Body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
+                    //body with boostrap
+                    string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\ConfirmEmailTemplate.cshtml";
+                    StreamReader str = new StreamReader(FilePath);
+                    string MailText = str.ReadToEnd();
+                    str.Close();
+                    string s = $"<a class='btn btn-primary' href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Confirm Email</a>";
+                    MailText = MailText.Replace("[username]", Input.Name).Replace("[confirm]", s);
+                    mailRequest.Body = MailText;
+
+
+                    //mailRequest.Body = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.";
                     await _mailService.SendEmailAsync(mailRequest);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)

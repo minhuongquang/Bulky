@@ -26,7 +26,7 @@ namespace Bulky.Models
         public string? Carrier { get; set; }
 
         public DateTime PaymentDate { get; set; }
-        public DateOnly PaymentDueDate { get; set; }
+        public DateTime PaymentDueDate { get; set; }
 
         public string? SessionID { get; set; }
         public string? PaymentIntendId { get; set; }

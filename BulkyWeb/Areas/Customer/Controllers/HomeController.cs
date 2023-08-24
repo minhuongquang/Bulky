@@ -20,12 +20,12 @@ namespace BulkyWeb.Areas.Customer.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> products = _unitOfWork.Product.GetAll(incluedeProperties:"Category").ToList();
+            List<Product> products = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
             return View(products);
         }
         public IActionResult Details(int productId)
         {
-            Product product = _unitOfWork.Product.Get(u => u.Id == productId, incluedeProperties: "Category");
+            Product product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category");
             ShoppingCart cart = new ShoppingCart();
             cart.Product = product;
             cart.Count = 1;

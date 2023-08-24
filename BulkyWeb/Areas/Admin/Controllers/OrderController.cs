@@ -30,8 +30,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             OrderVM = new()
             {
-                OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderId, incluedeProperties:"ApplicationUser"),
-                OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderHeaderId == orderId, incluedeProperties:"Product")
+                OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == orderId, includeProperties:"ApplicationUser"),
+                OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderHeaderId == orderId, includeProperties:"Product")
             };
 
             return View(OrderVM);
@@ -88,7 +88,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             
             if(orderHeaderFromDb.PaymentStatus == SD.PaymentStatusApprovedForDelayPayment)
             {
-                orderHeaderFromDb.PaymentDueDate = DateOnly.FromDateTime(DateTime.Now.AddDays(30));
+                orderHeaderFromDb.PaymentDueDate = DateTime.Now.AddDays(30);
             }
 
             _unitOfWork.OrderHeader.Update(orderHeaderFromDb);
@@ -133,8 +133,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult DelayPaid()
         {
-            OrderVM.OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id, incluedeProperties: "ApplicationUser");
-            OrderVM.OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderHeaderId == OrderVM.OrderHeader.Id, incluedeProperties: "Product");
+            OrderVM.OrderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id, includeProperties: "ApplicationUser");
+            OrderVM.OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderHeaderId == OrderVM.OrderHeader.Id, includeProperties: "Product");
 
             var domain = "https://localhost:44321/";
 
@@ -199,14 +199,14 @@ namespace BulkyWeb.Areas.Admin.Controllers
             IEnumerable<OrderHeader> orderHeaders;
             if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
             {
-                orderHeaders = _unitOfWork.OrderHeader.GetAll(incluedeProperties: "ApplicationUser").ToList();
+                orderHeaders = _unitOfWork.OrderHeader.GetAll(includeProperties: "ApplicationUser").ToList();
             }
             else
             {
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-                orderHeaders = _unitOfWork.OrderHeader.GetAll(u => u.ApplicationUserId == userId, incluedeProperties: "ApplicationUser").ToList();
+                orderHeaders = _unitOfWork.OrderHeader.GetAll(u => u.ApplicationUserId == userId, includeProperties: "ApplicationUser").ToList();
             }
             switch (status)
             {

@@ -10,6 +10,7 @@ namespace Bulky.Utility.Service.IService
     public interface IMailService
     {
         Task SendEmailAsync(MailRequest mailRequest);
+
     }
 
 }

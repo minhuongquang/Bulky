@@ -22,18 +22,10 @@ namespace Bulky.Utility.Service
             _mailSettings = mailSettings.Value;
         }
 
-        public async Task SendEmailAsync(MailRequest mailRequest, string type, string? username)
+        public async Task SendEmailAsync(MailRequest mailRequest)
         {
             try 
             {
-                if(type=="confirmEmail")
-                {
-                    string FilePath = Directory.GetCurrentDirectory() + "\\Templates\\ConfirmEmailTemplate.cshtml";
-                    StreamReader str = new StreamReader(FilePath);
-                    string MailText = str.ReadToEnd();
-                    str.Close();
-                    MailText = MailText.Replace("[username]", username);
-                }
                 var email = new MimeMessage();
                 email.Sender = MailboxAddress.Parse(_mailSettings.Mail);
                 email.To.Add(MailboxAddress.Parse(mailRequest.ToEmail));
@@ -69,5 +61,6 @@ namespace Bulky.Utility.Service
             }
 
         }
+
     }
 }
