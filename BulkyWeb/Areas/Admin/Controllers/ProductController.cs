@@ -25,19 +25,10 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
-            return View(products);
+            return View();
         }
         public IActionResult Upsert(int? id)
         {
-            //IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category
-            //    .GetAll().Select(u => new SelectListItem
-            //    {
-            //        Text = u.Name,
-            //        Value = u.Id.ToString()
-            //    });
-            //ViewBag.CategoryList = CategoryList;
-            //ViewData["CategoryList"] = CategoryList;
             ProductVM productVM = new()
             {
                 Product = new Product(),
@@ -139,32 +130,6 @@ namespace BulkyWeb.Areas.Admin.Controllers
             return Json(new { success = true, message = "Delete successfully" });
         }
         #endregion
-        //public IActionResult Delete(int? id)
-        //{
-        //    if (id == null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    Product? categoryFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-        //    if (categoryFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(categoryFromDb);
-        //}
-        //[HttpPost, ActionName("Delete")]
-        //public IActionResult DeleteConfirm(int? id)
-        //{
-        //    Product? obj = _unitOfWork.Product.Get(u => u.Id == id);
-        //    if (obj == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    _unitOfWork.Product.Remove(obj);
-        //    _unitOfWork.Save();
-        //    TempData["success"] = "Product Deleted successfully";
-        //    return RedirectToAction("Index");
-        //}
     }
 
 }
